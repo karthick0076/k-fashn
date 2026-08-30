@@ -43,4 +43,29 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// Update product
+router.put('/:id', upload.single('image'), async (req, res) => {
+    try {
+        const { name, description, price, category } = req.body;
+        
+        if (req.file) {
+            const imageUrl = `/uploads/${req.file.filename}`;
+            await db.query(
+                'UPDATE Products SET name = ?, description = ?, price = ?, category = ?, imageUrl = ? WHERE id = ?',
+                [name, description, price, category, imageUrl, req.params.id]
+            );
+        } else {
+            await db.query(
+                'UPDATE Products SET name = ?, description = ?, price = ?, category = ? WHERE id = ?',
+                [name, description, price, category, req.params.id]
+            );
+        }
+        
+        res.json({ message: 'Product updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 module.exports = router;
