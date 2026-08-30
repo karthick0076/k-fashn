@@ -3,7 +3,7 @@ services:
     name: kfashn-backend
     env: docker
     rootDir: backend
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: Dockerfile
     region: oregon
     plan: free
     envVars:
