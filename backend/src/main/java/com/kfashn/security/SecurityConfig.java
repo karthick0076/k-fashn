@@ -66,11 +66,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Set the allowed origin to *
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        // Set allowed origin patterns for dynamic Vercel URLs
+        configuration.setAllowedOriginPatterns(Arrays.asList("https://*.vercel.app", "http://localhost:*", frontendUrl));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(false);
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

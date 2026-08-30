@@ -11,6 +11,7 @@ export const getImageUrl = (url) => {
 export const apiFetch = async (endpoint, options = {}) => {
     const url = `${getBaseUrl()}${endpoint}`;
     const defaultOptions = {
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
