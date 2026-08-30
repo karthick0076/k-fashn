@@ -6,10 +6,18 @@ services:
     region: oregon
     plan: free
     envVars:
-      - key: DB_URL
+      - key: DB_HOST
         fromDatabase:
           name: kfashn-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: kfashn-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: kfashn-db
+          property: database
       - key: DB_USER
         fromDatabase:
           name: kfashn-db
