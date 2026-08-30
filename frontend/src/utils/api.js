@@ -1,5 +1,5 @@
 export const getBaseUrl = () => {
-    return import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return import.meta.env.VITE_API_URL || 'https://kfashn-backend.onrender.com';
 };
 
 export const getImageUrl = (url) => {
