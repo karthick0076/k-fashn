@@ -65,3 +65,7 @@ dist-ssr
 
 .env
 .env.*
+
+
+backend/apache-maven-3.9.5/
+backend/maven.zip
