@@ -8,16 +8,16 @@ router.post('/', async (req, res) => {
     const orderId = 'ORD' + Date.now();
     
     try {
-        const [orderResult] = await db.query(
-            'INSERT INTO Orders (orderId, userEmail, total) VALUES (?, ?, ?)',
+        const { rows } = await db.query(
+            'INSERT INTO Orders (orderId, userEmail, total) VALUES ($1, $2, $3) RETURNING id',
             [orderId, userEmail, total]
         );
         
-        const orderDbId = orderResult.insertId;
+        const orderDbId = rows[0].id;
         
         for (const item of items) {
             await db.query(
-                'INSERT INTO OrderItems (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)',
+                'INSERT INTO OrderItems (order_id, product_id, quantity, price) VALUES ($1, $2, $3, $4)',
                 [orderDbId, item.id, item.quantity, item.price]
             );
         }
@@ -32,15 +32,15 @@ router.post('/', async (req, res) => {
 // Get all orders (for admin)
 router.get('/', async (req, res) => {
     try {
-        const [orders] = await db.query('SELECT * FROM Orders ORDER BY created_at DESC');
+        const { rows: orders } = await db.query('SELECT * FROM Orders ORDER BY created_at DESC');
         
         // Fetch items for each order
         for(let i=0; i<orders.length; i++) {
-            const [items] = await db.query(`
+            const { rows: items } = await db.query(`
                 SELECT oi.*, p.name, p.imageUrl 
                 FROM OrderItems oi 
                 JOIN Products p ON oi.product_id = p.id 
-                WHERE oi.order_id = ?
+                WHERE oi.order_id = $1
             `, [orders[i].id]);
             orders[i].items = items;
         }

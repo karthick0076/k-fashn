@@ -21,15 +21,7 @@ async function initializeDB() {
     try {
         const fs = require('fs');
         const setupSql = fs.readFileSync(path.join(__dirname, 'db', 'setup.sql')).toString();
-        const queries = setupSql.split(';').filter(q => q.trim());
-        const connection = await require('mysql2/promise').createConnection({
-             host: 'localhost',
-             user: 'root',
-             password: '#Cloud23',
-             multipleStatements: true
-        });
-        await connection.query(setupSql);
-        await connection.end();
+        await db.query(setupSql);
         console.log('Database initialized successfully.');
     } catch (error) {
         console.error('Error initializing DB:', error);

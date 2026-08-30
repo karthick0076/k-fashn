@@ -10,18 +10,18 @@ router.post('/login', async (req, res) => {
         }
         
         // Check if user exists in DB, if not, create them (simulated signup as per spec)
-        const [rows] = await db.query('SELECT * FROM Users WHERE email = ?', [email]);
+        const { rows } = await db.query('SELECT * FROM Users WHERE email = $1', [email]);
         
         if (rows.length > 0) {
             const user = rows[0];
             if (user.password === password) {
-                res.json({ success: true, role: 'user', email });
+                res.json({ success: true, role: user.role || 'user', email });
             } else {
                 res.status(401).json({ success: false, message: 'Invalid password' });
             }
         } else {
             // Simulated signup
-            await db.query('INSERT INTO Users (email, password, role) VALUES (?, ?, ?)', [email, password, 'user']);
+            await db.query('INSERT INTO Users (email, password, role) VALUES ($1, $2, $3)', [email, password, 'user']);
             res.json({ success: true, role: 'user', email });
         }
     } catch (error) {
