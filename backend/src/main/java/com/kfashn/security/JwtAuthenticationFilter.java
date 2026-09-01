@@ -41,6 +41,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
+        
+        // Fallback to Authorization header if cookie is blocked (e.g. 3rd party cookie blocking)
+        if (jwt == null) {
+            String authHeader = request.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                jwt = authHeader.substring(7);
+            }
+        }
 
         if (jwt != null) {
             try {

@@ -20,6 +20,7 @@ const Login = () => {
             });
             
             if (data.success) {
+                if (data.token) localStorage.setItem('token', data.token);
                 login({ email: data.email, role: data.role });
                 if (data.role === 'admin') navigate('/admin');
                 else navigate('/home');

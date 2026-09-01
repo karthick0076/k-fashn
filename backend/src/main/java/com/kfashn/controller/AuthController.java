@@ -76,6 +76,7 @@ public class AuthController {
             respBody.put("success", true);
             respBody.put("role", user.getRole().replace("ROLE_", "").toLowerCase());
             respBody.put("email", email);
+            respBody.put("token", jwt);
 
             rateLimiter.recordSuccessfulAttempt(email);
             return ResponseEntity.ok(respBody);

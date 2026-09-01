@@ -10,10 +10,12 @@ export const getImageUrl = (url) => {
 
 export const apiFetch = async (endpoint, options = {}) => {
     const url = `${getBaseUrl()}${endpoint}`;
+    const token = localStorage.getItem('token');
     const defaultOptions = {
         credentials: 'include',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
         }
     };
 
