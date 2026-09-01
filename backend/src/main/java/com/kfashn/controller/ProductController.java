@@ -72,8 +72,8 @@ public class ProductController {
                     
                     product.setImageUrl("/uploads/" + filename);
                 }
-            } catch (IOException e) {
-                return ResponseEntity.status(500).body("Could not upload image");
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body("Could not upload image: " + e.getMessage());
             }
         }
 
@@ -118,8 +118,8 @@ public class ProductController {
                     
                     product.setImageUrl("/uploads/" + filename);
                 }
-            } catch (IOException e) {
-                return ResponseEntity.status(500).body("Could not upload image");
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body("Could not upload image: " + e.getMessage());
             }
         }
 
