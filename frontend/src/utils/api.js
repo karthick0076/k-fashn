@@ -3,7 +3,7 @@ export const getBaseUrl = () => {
 };
 
 export const getImageUrl = (url) => {
-    if (!url) return 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
+    if (!url) return '';
     if (url.startsWith('http')) return url;
     return `${getBaseUrl()}${url}`;
 };
