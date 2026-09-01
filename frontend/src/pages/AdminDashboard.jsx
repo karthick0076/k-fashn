@@ -121,9 +121,15 @@ const AdminDashboard = () => {
                             </div>
                             <div className="form-group">
                                 <label>Product Image {editingId && '(Leave blank to keep current)'}</label>
-                                <input type="file" className="form-control" onChange={e => setImage(e.target.files[0])} />
+                                <input type="file" className="form-control" onChange={e => setImage(e.target.files[0])} accept="image/*" />
+                                {image && (
+                                    <div style={{ marginTop: '1rem' }}>
+                                        <p style={{ fontSize: '0.9rem', color: '#666' }}>Selected preview:</p>
+                                        <img src={URL.createObjectURL(image)} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '4px', marginTop: '0.5rem' }} />
+                                    </div>
+                                )}
                             </div>
-                            <div style={{ display: 'flex', gap: '1rem' }}>
+                            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                                 <button type="submit" className="btn-primary" style={{ flex: 1 }}>{editingId ? 'Update Product' : 'Upload Product'}</button>
                                 {editingId && <button type="button" className="btn-secondary" style={{ flex: 1 }} onClick={handleCancelEdit}>Cancel</button>}
                             </div>
@@ -135,6 +141,7 @@ const AdminDashboard = () => {
                         <thead>
                             <tr style={{ background: 'var(--primary-color)', color: 'white', textAlign: 'left' }}>
                                 <th style={{ padding: '1rem' }}>ID</th>
+                                <th style={{ padding: '1rem' }}>Image</th>
                                 <th style={{ padding: '1rem' }}>Name</th>
                                 <th style={{ padding: '1rem' }}>Price</th>
                                 <th style={{ padding: '1rem' }}>Category</th>
@@ -145,10 +152,13 @@ const AdminDashboard = () => {
                             {products.map(p => (
                                 <tr key={p.id} style={{ borderBottom: '1px solid #eee' }}>
                                     <td style={{ padding: '1rem' }}>{p.id}</td>
+                                    <td style={{ padding: '1rem' }}>
+                                        {p.imageUrl && <img src={p.imageUrl.startsWith('http') ? p.imageUrl : `${import.meta.env.VITE_API_URL || 'https://kfashn-backend.onrender.com'}${p.imageUrl}`} alt={p.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} />}
+                                    </td>
                                     <td style={{ padding: '1rem' }}>{p.name}</td>
                                     <td style={{ padding: '1rem' }}>₹{p.price}</td>
                                     <td style={{ padding: '1rem' }}>{p.category}</td>
-                                    <td style={{ padding: '1rem', display: 'flex', gap: '1rem' }}>
+                                    <td style={{ padding: '1rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                         <button onClick={() => handleEditClick(p)} style={{ color: 'var(--primary-color)', background: 'transparent', fontWeight: 'bold' }}>Edit</button>
                                         <button onClick={() => handleDeleteProduct(p.id)} style={{ color: 'red', background: 'transparent', fontWeight: 'bold' }}>Delete</button>
                                     </td>
